@@ -1,24 +1,53 @@
-# Lumen PHP Framework
+Steps to run this project
+1. Assigned the DB name to .env file
+2. Run the database migration - php artisan migrate
+3. Project URLS listed below:  
+4. Device Register - http://localhost/example_lar/public/deviceRegister - post method
+     Request - post data as json - {
+	      "device_id":"2001244",
+	      "version_number":2,
+	      "platform":"android"
+      }
+     Response - jwt token(device ID)
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://img.shields.io/packagist/dt/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://img.shields.io/packagist/v/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://img.shields.io/packagist/l/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
+5. User Register - http://localhost/example_lar/public/userRegister - post method
+   header - credentials - jwt token(device ID)
+   Request - post data as json -
+    {
+	"unique_id":"test24355",
+	"username":"hari"
+    }
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+    Response - user jwt token(user_id,device_id)
 
-## Official Documentation
+6. Login - http://localhost/example_lar/public/login - post method
+   header - credentials - jwt token(device id)
+   Request - post data as json -
+    {
+	"unique_id":"test24355"
+    }
+     
+   Response - user_jwt(user_id,device_id),user_info(user table)
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
+7. TournamentLists - http://localhost/example_lar/public/tournamentLists - get method
+   header - credentials - jwt token(user_jwt token(user_id,device_id))
+   Response - Based on the device(get it from token) platform it will display the tournament  
+        
+8. Add Tournament Score - http://localhost/example_lar/public/addTournamentScore/1 - post method
+   param - TournamentID
+   header - credentials - jwt token(user_jwt token(user_id,device_id))
+   Request - post data as json -
+   {
+     "score" : 30
+   }
+   Response - Added Score will display 
 
-## Contributing
+9. Schedule cron for ranking - app/console/kernel.php - php artisan schedule:run
+    
+10. Leader Board - http://localhost/example_lar/public/leaderBoard/1 - Get Method
+   Param - TournamentID
+   header - credentials - jwt token(user_jwt token(user_id,device_id))
+   Response - Top 10 rank and logged In user rank  
+    
 
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+ 
